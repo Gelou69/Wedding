@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kristen & Jake | Our Wedding</title>
+    <title>Kristen & Denzel | Our Wedding</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -20,7 +20,7 @@
             font-family: 'Playfair Display', serif;
         }
 
-        /* 1. LOADER SPLASH SCREEN STYLES */
+        /* 1. LOADER SPLASH SCREEN STYLES (Responsive & Centered) */
         #loader-splash {
             position: fixed;
             top: 0;
@@ -35,14 +35,48 @@
             font-family: 'Playfair Display', serif;
             z-index: 1000;
             opacity: 1;
-            transition: opacity 1.5s ease-out; /* Fade out transition */
+            transition: opacity 1.5s ease-out; 
+            /* Ensure text is centered within the flex container */
+            text-align: center;
         }
-        #loader-text {
-            font-size: 4rem; 
-            font-weight: 700;
-            letter-spacing: 0.25em;
+        #loader-splash.hidden {
+            display: none;
+        }
+        #loader-text-container {
+            display: flex;
+            flex-direction: column; /* Stack the icon and text */
+            align-items: center;
+            justify-content: center;
+        }
+        #loader-icon {
+            font-size: 3rem; /* Size for the sunflower icon */
+            margin-bottom: 0.5rem;
             opacity: 0;
             animation: textFadeIn 1.5s ease-in-out forwards;
+        }
+        #loader-text {
+            font-size: 2.5rem; /* Default for mobile */
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            opacity: 0;
+            animation: textFadeIn 1.5s ease-in-out forwards;
+            animation-delay: 0.2s; /* Slight delay after icon */
+            margin-bottom: 2rem; /* Add space for the new button */
+        }
+        /* New styles for the music button */
+        #play-music-btn {
+            opacity: 0;
+            animation: textFadeIn 1.5s ease-in-out forwards;
+            animation-delay: 1s;
+        }
+        @media (min-width: 640px) {
+            #loader-text {
+                font-size: 4rem; 
+                letter-spacing: 0.25em;
+            }
+            #loader-icon {
+                font-size: 5rem;
+            }
         }
 
         /* Keyframe for text reveal */
@@ -52,7 +86,7 @@
             100% { opacity: 1; transform: scale(1); }
         }
         
-        /* 2. SUNFLOWER PETAL ANIMATION STYLES */
+        /* 2. SUNFLOWER PETAL ANIMATION STYLES (No Change) */
         .petal-bg {
             position: fixed;
             top: 0;
@@ -89,7 +123,7 @@
             }
         }
         
-        /* 3. SCROLL REVEAL STYLES */
+        /* 3. SCROLL REVEAL STYLES (No Change) */
         .animate-on-scroll {
             opacity: 0;
             transform: translateY(30px);
@@ -101,7 +135,7 @@
             transform: translateY(0);
         }
 
-        /* 4. HERO SECTION ANIMATION STYLES */
+        /* 4. HERO SECTION ANIMATION STYLES (No Change) */
         .hero-image {
              animation: fadeInScale 1.5s forwards;
         }
@@ -113,6 +147,24 @@
         @keyframes fadeInScale {
             from { opacity: 0; transform: scale(0.9); }
             to { opacity: 1; transform: scale(1); }
+        }
+
+        /* 5. SLIDER SPECIFIC STYLES (No Change) */
+        .slider-image {
+            width: 100%;
+            height: 400px; /* Fixed height for consistency */
+            object-fit: cover;
+            transition: opacity 0.7s ease-in-out;
+        }
+        .story-text {
+            min-height: 120px; /* Ensure consistent height for text area */
+            transition: opacity 0.7s ease-in-out;
+        }
+        .fade-out {
+            opacity: 0;
+        }
+        .fade-in {
+            opacity: 1;
         }
     </style>
     
@@ -135,8 +187,25 @@
 
 <body class="bg-bg-light text-text-dark antialiased overflow-x-hidden">
 
+    <audio id="background-music" loop preload="auto">
+        <source src="MUSIC (2).mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
     <div id="loader-splash">
-        <h2 id="loader-text">YOU ARE INVITED</h2>
+        <div id="loader-text-container">
+            <span id="loader-icon" class="text-sun-yellow" aria-hidden="true">🌻</span>
+            <h2 id="loader-text">YOU ARE INVITED</h2>
+            
+            <button id="play-music-btn" class="bg-sun-yellow text-sun-brown font-bold text-lg py-2 px-6 rounded-full shadow-lg hover:bg-yellow-500 transition-colors duration-300 transform hover:scale-105 active:scale-95 border-2 border-sun-brown">
+                <span class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="w-5 h-5 mr-2">
+                        <path fill-rule="evenodd" d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653z" clip-rule="evenodd" />
+                    </svg>
+                    ACCEPT
+                </span>
+            </button>
+            </div>
     </div>
 
     <div id="petal-container" class="petal-bg"></div>
@@ -147,18 +216,20 @@
             <div class="relative z-10 space-y-6 sm:space-y-8 max-w-3xl mx-auto py-12 px-6">
                 
                 <div class="relative w-48 h-48 sm:w-64 sm:h-64 mx-auto rounded-full overflow-hidden border-4 border-sun-yellow shadow-xl opacity-0 transform scale-90 hero-image">
-                    <img src="pic.jpg" alt="Kristen and Jake smiling" class="w-full h-full object-cover">
+                    <img src="pic.jpg" alt="Kristen and Denzel smiling" class="w-full h-full object-cover">
                 </div>
 
-                <p class="text-xl sm:text-2xl font-header tracking-widest text-sun-brown opacity-0 transition-all duration-1000 delay-500" style="animation: fadeIn 1s forwards;">We're Getting Married!</p>
-                <h1 class="text-6xl sm:text-8xl font-header font-bold text-sun-brown leading-tight opacity-0 transition-all duration-1000 delay-800" style="animation: fadeIn 1s forwards;">
-                    Kristen & Jake
+                <p class="text-lg sm:text-2xl font-header tracking-widest text-sun-brown opacity-0 transition-all duration-1000 delay-500" style="animation: fadeIn 1s forwards;">We're Getting Married!</p>
+                
+                <h1 class="text-5xl md:text-8xl font-header font-bold text-sun-brown leading-tight opacity-0 transition-all duration-1000 delay-800" style="animation: fadeIn 1s forwards;">
+                    Kristen & Denzel
                 </h1>
+                
                 <p class="text-xl sm:text-3xl font-header text-sun-yellow tracking-wider opacity-0 transition-all duration-1000 delay-[1100ms]" style="animation: fadeIn 1s forwards;">
                     September 20th, 2026
                 </p>
                 
-                <div id="countdown" class="flex justify-center space-x-3 sm:space-x-4 mt-8 text-center text-text-dark opacity-0 transition-all duration-1000 delay-[1400ms]" style="animation: fadeIn 1s forwards;">
+                <div id="countdown" class="flex justify-center space-x-2 sm:space-x-4 mt-8 text-center text-text-dark opacity-0 transition-all duration-1000 delay-[1400ms]" style="animation: fadeIn 1s forwards;">
                     </div>
             </div>
             
@@ -212,8 +283,41 @@
             </div>
         </section>
 
+        <section id="our-story" class="py-20 px-4 sm:px-8 bg-yellow-100/50 animate-on-scroll">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="text-5xl font-header mb-12 text-sun-brown">Our Story</h2>
+                
+                <div class="max-w-2xl mx-auto mb-10 p-6 bg-white rounded-xl shadow-lg border-t-4 border-theme-green animate-on-scroll">
+                    <p id="story-heading" class="text-2xl font-header font-semibold text-sun-yellow mb-4">The Beginning</p>
+                    <p id="story-paragraph" class="text-lg text-gray-700 story-text">
+                        It all started on a warm summer evening at a local farmer's market. Kristen was admiring the sunflowers, and Denzel, selling his homemade honey, offered her a free sample. It was love at first sight... and first taste!
+                    </p>
+                </div>
+
+                <div id="story-slider" class="relative w-full max-w-2xl mx-auto overflow-hidden rounded-xl shadow-lg border-2 border-sun-yellow animate-on-scroll">
+                    
+                    <img id="slider-img" src="pic 121.jpg" alt="Our story photo 1: The Beginning" class="slider-image">
+                    
+                    <button id="prev-slide" class="absolute top-1/2 left-4 transform -translate-y-1/2 bg-sun-brown/70 text-white p-2 rounded-full shadow-md hover:bg-sun-yellow hover:text-sun-brown transition-colors focus:outline-none focus:ring-2 focus:ring-sun-yellow" aria-label="Previous slide">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                        </svg>
+                    </button>
+                    
+                    <button id="next-slide" class="absolute top-1/2 right-4 transform -translate-y-1/2 bg-sun-brown/70 text-white p-2 rounded-full shadow-md hover:bg-sun-yellow hover:text-sun-brown transition-colors focus:outline-none focus:ring-2 focus:ring-sun-yellow" aria-label="Next slide">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                        </svg>
+                    </button>
+
+                    <div id="slider-dots" class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+                        </div>
+                </div>
+            </div>
+        </section>
+
         <footer class="bg-sun-brown/80 text-white py-8 text-center mt-12">
-            <p class="text-xl font-header">© 2026 Kristen & Jake</p>
+            <p class="text-xl font-header">© 2026 Kristen & Denzel</p>
             <p class="text-sm mt-2">Love is in the air... and the sunflowers are blooming!</p>
         </footer>
 
@@ -226,22 +330,37 @@
             const petalContainer = document.getElementById('petal-container');
             const loaderSplash = document.getElementById('loader-splash');
             const mainContent = document.querySelector('main');
-            
-            // --- 1. LOADING SPLASH SCREEN REVEAL ---
-            const revealTime = 3000; // 3 seconds total display time for the splash
+            const music = document.getElementById('background-music');
+            const playMusicBtn = document.getElementById('play-music-btn');
 
-            setTimeout(() => {
-                // 1. Start fading out the splash screen
+            
+            // --- 1. LOADING SPLASH SCREEN REVEAL & MUSIC START FIX ---
+            let hasInteracted = false;
+            let isMusicPlaying = false; 
+            let isStorySliderVisible = false;
+
+            // Function to reveal the main content and remove the splash
+            function revealContent() {
                 loaderSplash.style.opacity = '0';
                 
-                // 2. After the fade transition is complete (1.5s, based on CSS transition)
                 setTimeout(() => {
-                    loaderSplash.classList.add('hidden'); // Hide it completely
-                    mainContent.classList.remove('hidden'); // Reveal the main content
-                }, 1500); 
+                    loaderSplash.classList.add('hidden');
+                    mainContent.classList.remove('hidden');
+                }, 1500); // Wait for the fade transition to finish
+            }
 
-            }, revealTime);
+            // Function to handle content access (no music attempt here)
+            function startContent() {
+                if (hasInteracted) return;
+                hasInteracted = true;
+                
+                // We reveal content immediately after the user interacts
+                revealContent(); 
+            }
 
+            // B. Event listener: Content is revealed on button click (music will start later)
+            playMusicBtn.addEventListener('click', startContent);
+            
 
             // --- 2. COUNTDOWN TIMER LOGIC ---
             function updateCountdown() {
@@ -266,14 +385,13 @@
                 ];
 
                 countdownEl.innerHTML = segments.map(segment => `
-                    <div class="p-3 sm:p-4 bg-white/70 backdrop-blur-sm rounded-lg shadow-md min-w-[70px] transition-all duration-300 hover:scale-[1.02]">
-                        <div class="text-4xl sm:text-5xl font-bold font-header text-sun-brown">${segment.value.toString().padStart(2, '0')}</div>
-                        <div class="text-xs sm:text-sm font-semibold text-text-dark uppercase mt-1">${segment.label}</div>
+                    <div class="p-2.5 sm:p-4 bg-white/70 backdrop-blur-sm rounded-lg shadow-md min-w-[60px] sm:min-w-[70px] transition-all duration-300 hover:scale-[1.02]">
+                        <div class="text-3xl sm:text-5xl font-bold font-header text-sun-brown">${segment.value.toString().padStart(2, '0')}</div>
+                        <div class="text-xs font-semibold text-text-dark uppercase mt-1">${segment.label}</div>
                     </div>
                 `).join('');
             }
 
-            // Update every second
             updateCountdown();
             setInterval(updateCountdown, 1000);
 
@@ -283,7 +401,35 @@
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('is-visible');
-                        observer.unobserve(entry.target);
+                        // Do NOT unobserve the #our-story section, so we can detect when it leaves the viewport
+                        if (entry.target.id !== 'our-story' && entry.target.closest('#our-story') === null) {
+                            observer.unobserve(entry.target);
+                        }
+
+                        // Check if the observed element is the 'our-story' section
+                        if (entry.target.id === 'our-story' || entry.target.closest('#our-story')) {
+                            isStorySliderVisible = true;
+                            
+                            // NEW LOGIC: If the user accepted but the music is not playing yet, try to play it.
+                            if (hasInteracted && !isMusicPlaying) {
+                                music.volume = 0.4;
+                                music.play().then(() => {
+                                    isMusicPlaying = true;
+                                    startAutoPlay(); 
+                                }).catch(error => {
+                                    console.log("Music play failed on scroll. Proceeding with slideshow only.");
+                                    isMusicPlaying = false;
+                                    startAutoPlay(); // Start slideshow even if music fails
+                                });
+                            } else if (hasInteracted) {
+                                // Music is already playing, just ensure autoplay starts
+                                startAutoPlay(); 
+                            }
+                        }
+                    } else if (!entry.isIntersecting && (entry.target.id === 'our-story' || entry.target.closest('#our-story'))) {
+                         // Stop autoplay when the story section scrolls out of view
+                         isStorySliderVisible = false;
+                         clearInterval(autoPlayInterval);
                     }
                 });
             }, {
@@ -301,10 +447,9 @@
                 const petal = document.createElement('div');
                 petal.classList.add('petal');
                 
-                // Randomize starting position, size, and animation duration/delay
-                const size = Math.random() * 15 + 10; // 10px to 25px
-                const duration = Math.random() * 15 + 15; // 15s to 30s
-                const delay = Math.random() * -duration; // Negative delay ensures animation starts immediately
+                const size = Math.random() * 15 + 10;
+                const duration = Math.random() * 15 + 15;
+                const delay = Math.random() * -duration;
 
                 petal.style.width = `${size}px`;
                 petal.style.height = `${size}px`;
@@ -312,23 +457,136 @@
                 petal.style.animationDuration = `${duration}s`;
                 petal.style.animationDelay = `${delay}s`;
                 
-                // Random rotation for a little extra chaos
                 petal.style.transform = `rotate(${Math.random() * 360}deg)`;
 
                 petalContainer.appendChild(petal);
             }
             
-            // --- 5. RSVP INTERACTION ---
+            // --- 5. RSVP INTERACTION FIX ---
             const rsvpBtn = document.getElementById('rsvp-btn');
             const rsvpMessage = document.getElementById('rsvp-message');
             
-            rsvpBtn.addEventListener('click', () => {
-                // In a real application, you'd send data to a server here.
-                // For this template, we just show a confirmation message.
-                rsvpBtn.classList.add('hidden');
-                rsvpMessage.classList.remove('hidden');
+            rsvpBtn.addEventListener('click', (event) => {
+                event.preventDefault(); // Treat button as an interaction
+                
+                if (!rsvpBtn.disabled) {
+                    // Simulate RSVP submission
+                    rsvpBtn.textContent = 'RSVP Received!';
+                    rsvpBtn.classList.remove('bg-sun-yellow', 'hover:bg-yellow-500', 'border-sun-brown');
+                    rsvpBtn.classList.add('bg-theme-green', 'hover:bg-theme-green', 'border-theme-green', 'cursor-default');
+                    
+                    rsvpMessage.classList.remove('hidden');
+                    rsvpBtn.disabled = true; // Disable the button after action
+                }
             });
-            
+
+            // --- 6. OUR STORY SLIDER LOGIC (12 SLIDES) ---
+            const storySlides = [
+                { img: 'pic 121.jpg', heading: 'The Beginning', text: "It all started with a chance meeting. Kristen was admiring the sunflowers, and Denzel, selling his homemade honey, offered her a free sample." },
+                { img: 'pic 10.jpg', heading: 'Our First Date', text: "We spent our first date hiking up Eagle Peak, talking for hours. The view was incredible, but the spark between us was brighter." },
+                { img: 'pic 9.jpg', heading: 'Making It Official', text: "After two months, we knew this was forever. We officially became a couple on the Ferris wheel overlooking the city lights." },
+                { img: 'pic 8.jpg', heading: 'Travel Bug', text: "Our first big trip was backpacking across Italy. We ate pasta, saw ancient ruins, and realized we were the best travel partners." },
+                { img: 'pic 7.jpg', heading: 'Moving In', text: "Combining two households meant a lot of effort, but building a home together was the first step in our lifelong journey." },
+                { img: 'pic 6.jpg', heading: 'Adopting Luna', text: "We adopted our mischievous cat, Luna. She quickly became the undisputed queen of the household and our furry best friend." },
+                { img: 'pic 5.jpg', heading: 'Big Challenges', text: "Like any couple, we faced challenges, but our love and commitment only grew stronger with every obstacle we overcame." },
+                { img: 'pic 4.jpg', heading: 'Family Vacations', text: "The first time we brought our families together for a holiday—a chaotic, laughter-filled weekend we'll never forget." },
+                { img: 'pic 3.jpg', heading: 'The Proposal Day', text: "Denzel got down on one knee under a sky full of stars during our annual camping trip. It was perfect, private, and tear-filled." },
+                { img: 'pic 2.jpg', heading: 'Engagement Party', text: "Celebrating with all our loved ones felt incredible. We were overwhelmed by the support and joy surrounding us." },
+                { img: 'pic 1.jpg', heading: 'Planning the Wedding', text: "Choosing the Golden Fields Farm was easy—it reminded us of our first meeting among the sunflowers. Everything is falling into place!" },
+                { img: 'pic 1.jpg', heading: 'Next Chapter', text: "Now, as the countdown continues, we eagerly await the moment we say 'I do' and start the next, greatest chapter of our story with all of you!" }
+            ];
+
+            let currentSlide = 0;
+            const sliderImg = document.getElementById('slider-img');
+            const storyHeading = document.getElementById('story-heading');
+            const storyParagraph = document.getElementById('story-paragraph');
+            const prevSlideBtn = document.getElementById('prev-slide');
+            const nextSlideBtn = document.getElementById('next-slide');
+            const sliderDotsContainer = document.getElementById('slider-dots');
+
+            function renderDots() {
+                sliderDotsContainer.innerHTML = '';
+                storySlides.forEach((_, index) => {
+                    const dot = document.createElement('button');
+                    dot.classList.add('w-3', 'h-3', 'rounded-full', 'bg-gray-400', 'hover:bg-sun-yellow', 'transition-colors', 'focus:outline-none', 'focus:ring-2', 'focus:ring-sun-yellow');
+                    if (index === currentSlide) {
+                        dot.classList.remove('bg-gray-400');
+                        dot.classList.add('bg-sun-yellow', 'scale-125');
+                    }
+                    dot.addEventListener('click', () => {
+                        showSlide(index);
+                        resetAutoPlay();
+                    });
+                    dot.setAttribute('aria-label', `Go to slide ${index + 1}`);
+                    sliderDotsContainer.appendChild(dot);
+                });
+            }
+
+            function showSlide(index) {
+                if (index < 0) {
+                    currentSlide = storySlides.length - 1;
+                } else if (index >= storySlides.length) {
+                    currentSlide = 0;
+                } else {
+                    currentSlide = index;
+                }
+
+                // Fade out current content
+                sliderImg.classList.add('fade-out');
+                storyHeading.classList.add('fade-out');
+                storyParagraph.classList.add('fade-out');
+
+                setTimeout(() => {
+                    // Update content
+                    sliderImg.src = storySlides[currentSlide].img;
+                    sliderImg.alt = `Our story photo ${currentSlide + 1}: ${storySlides[currentSlide].heading}`;
+                    storyHeading.textContent = storySlides[currentSlide].heading;
+                    storyParagraph.textContent = storySlides[currentSlide].text;
+
+                    // Fade in new content
+                    sliderImg.classList.remove('fade-out');
+                    storyHeading.classList.remove('fade-out');
+                    storyParagraph.classList.remove('fade-out');
+                    
+                    renderDots();
+                }, 700);
+            }
+
+            prevSlideBtn.addEventListener('click', () => {
+                showSlide(currentSlide - 1);
+                resetAutoPlay();
+            });
+
+            nextSlideBtn.addEventListener('click', () => {
+                showSlide(currentSlide + 1);
+                resetAutoPlay();
+            });
+
+            // Auto-play functionality
+            let autoPlayInterval;
+            const autoPlayDelay = 8000;
+
+            function startAutoPlay() {
+                // Autoplay only starts if the user has interacted AND the story section is visible
+                if (isStorySliderVisible && hasInteracted) { 
+                    clearInterval(autoPlayInterval); // Clear any existing interval
+                    autoPlayInterval = setInterval(() => {
+                        showSlide(currentSlide + 1);
+                    }, autoPlayDelay);
+                }
+            }
+
+            function resetAutoPlay() {
+                clearInterval(autoPlayInterval);
+                // Restart only if the slider section is still visible
+                if (isStorySliderVisible) { 
+                    startAutoPlay();
+                }
+            }
+
+            // Initialize slider and dots display
+            showSlide(0);
+            // Auto-play will be handled by the Intersection Observer when the section scrolls into view
         });
     </script>
 </body>
