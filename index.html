@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kristen & Jake | Our Wedding</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        /* Custom Font Setup */
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:wght@100..900&display=swap');
+
+        /* Tailwind Configuration overrides */
+        :root {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .font-header {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* 1. LOADER SPLASH SCREEN STYLES */
+        #loader-splash {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #92400E; /* sun-brown */
+            color: #FFFBEB; /* bg-light */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Playfair Display', serif;
+            z-index: 1000;
+            opacity: 1;
+            transition: opacity 1.5s ease-out; /* Fade out transition */
+        }
+        #loader-text {
+            font-size: 4rem; 
+            font-weight: 700;
+            letter-spacing: 0.25em;
+            opacity: 0;
+            animation: textFadeIn 1.5s ease-in-out forwards;
+        }
+
+        /* Keyframe for text reveal */
+        @keyframes textFadeIn {
+            0% { opacity: 0; transform: scale(0.95); }
+            50% { opacity: 1; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        
+        /* 2. SUNFLOWER PETAL ANIMATION STYLES */
+        .petal-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .petal {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #facc15; /* yellow-400 */
+            border-radius: 50% 50% 50% 0 / 50% 50% 0 50%; /* Petal shape */
+            opacity: 0.7;
+            box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+        
+        /* 3. SCROLL REVEAL STYLES */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1.2s ease-out, transform 1.2s ease-out;
+        }
+        
+        .animate-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 4. HERO SECTION ANIMATION STYLES */
+        .hero-image {
+             animation: fadeInScale 1.5s forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+    </style>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'sun-yellow': '#FBBF24', /* amber-400 */
+                        'sun-brown': '#92400E', /* amber-800 */
+                        'bg-light': '#FFFBEB', /* amber-50 */
+                        'text-dark': '#4A2B0E',
+                        'theme-green': '#16A34A', /* green-600 */
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-bg-light text-text-dark antialiased overflow-x-hidden">
+
+    <div id="loader-splash">
+        <h2 id="loader-text">YOU ARE INVITED</h2>
+    </div>
+
+    <div id="petal-container" class="petal-bg"></div>
+
+    <main class="relative z-10 hidden"> 
+
+        <section id="hero" class="min-h-screen flex flex-col items-center justify-center text-center p-4 bg-yellow-100/50 relative overflow-hidden">
+            <div class="relative z-10 space-y-6 sm:space-y-8 max-w-3xl mx-auto py-12 px-6">
+                
+                <div class="relative w-48 h-48 sm:w-64 sm:h-64 mx-auto rounded-full overflow-hidden border-4 border-sun-yellow shadow-xl opacity-0 transform scale-90 hero-image">
+                    <img src="pic.jpg" alt="Kristen and Jake smiling" class="w-full h-full object-cover">
+                </div>
+
+                <p class="text-xl sm:text-2xl font-header tracking-widest text-sun-brown opacity-0 transition-all duration-1000 delay-500" style="animation: fadeIn 1s forwards;">We're Getting Married!</p>
+                <h1 class="text-6xl sm:text-8xl font-header font-bold text-sun-brown leading-tight opacity-0 transition-all duration-1000 delay-800" style="animation: fadeIn 1s forwards;">
+                    Kristen & Jake
+                </h1>
+                <p class="text-xl sm:text-3xl font-header text-sun-yellow tracking-wider opacity-0 transition-all duration-1000 delay-[1100ms]" style="animation: fadeIn 1s forwards;">
+                    September 20th, 2026
+                </p>
+                
+                <div id="countdown" class="flex justify-center space-x-3 sm:space-x-4 mt-8 text-center text-text-dark opacity-0 transition-all duration-1000 delay-[1400ms]" style="animation: fadeIn 1s forwards;">
+                    </div>
+            </div>
+            
+            <a href="#details" class="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-sun-brown animate-bounce opacity-0 transition-all duration-1000 delay-[1600ms]" style="animation: fadeIn 1s forwards;" aria-label="Scroll down for event details">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                </svg>
+            </a>
+        </section>
+        
+        <section id="details" class="py-20 px-4 sm:px-8 bg-bg-light">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="text-5xl font-header mb-12 text-sun-yellow animate-on-scroll">The Day We Say "I Do"</h2>
+                
+                <div class="grid md:grid-cols-2 gap-8 md:gap-12">
+                    
+                    <div class="p-8 bg-white rounded-xl shadow-lg border-t-4 border-sun-yellow animate-on-scroll">
+                        <div class="flex items-center justify-center mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 text-sun-yellow" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-9-6v.75m-4.5 3V21M8.25 9V21m3.75-9H15" />
+                            </svg>
+                        </div>
+                        <h3 class="text-3xl font-header font-semibold mb-3 text-sun-brown">Ceremony</h3>
+                        <p class="text-lg font-bold mb-2">4:00 PM</p>
+                        <p class="text-gray-600">The Golden Fields Farm</p>
+                        <p class="text-gray-600">123 Sunset Lane, Meadowville, CA 90210</p>
+                        <a href="#" target="_blank" rel="noopener noreferrer" class="text-sm text-sun-yellow hover:text-sun-brown transition-colors duration-300 block mt-4 underline" title="Open The Golden Fields Farm location in Google Maps">View Map</a>
+                    </div>
+                    
+                    <div class="p-8 bg-white rounded-xl shadow-lg border-t-4 border-theme-green animate-on-scroll">
+                        <div class="flex items-center justify-center mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 text-theme-green" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 01-3.08-3.08L3.25 12l2.846-.813a4.5 4.5 0 013.08-3.08L9 5.25l.813 2.846a4.5 4.5 0 013.08 3.08L15.75 12l-2.846.813a4.5 4.5 0 01-3.08 3.08zM17.825 3.39L18.4 5.923l2.53-1.071-1.07 2.53 2.53 1.072-3.663 3.664M9 10H7.5M9 8H7.5" />
+                            </svg>
+                        </div>
+                        <h3 class="text-3xl font-header font-semibold mb-3 text-sun-brown">Reception</h3>
+                        <p class="text-lg font-bold mb-2">6:00 PM - Midnight</p>
+                        <p class="text-gray-600">Dinner, Dancing, and Celebration to follow at the same location!</p>
+                        <p class="text-sm mt-4 italic">Dress Code: Rustic Formal - Colors encouraged are earthy greens and yellows.</p>
+                    </div>
+                </div>
+
+                <div class="mt-16 animate-on-scroll">
+                    <button id="rsvp-btn" class="bg-sun-yellow text-sun-brown font-bold text-xl py-3 px-10 rounded-full shadow-lg hover:bg-yellow-500 transition-all duration-300 transform hover:scale-105 active:scale-95 border-2 border-sun-brown relative overflow-hidden" role="button">
+                        <span class="relative z-10">RSVP Now</span>
+                        <div class="absolute inset-0 bg-white opacity-0 transition-opacity duration-500 hover:opacity-10"></div>
+                    </button>
+                    <p id="rsvp-message" class="mt-4 text-theme-green font-semibold hidden" aria-live="polite">Thank you for your RSVP! We can't wait to celebrate with you.</p>
+                </div>
+                
+            </div>
+        </section>
+
+        <footer class="bg-sun-brown/80 text-white py-8 text-center mt-12">
+            <p class="text-xl font-header">© 2026 Kristen & Jake</p>
+            <p class="text-sm mt-2">Love is in the air... and the sunflowers are blooming!</p>
+        </footer>
+
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const weddingDate = new Date("September 20, 2026 16:00:00").getTime();
+            const countdownEl = document.getElementById('countdown');
+            const petalContainer = document.getElementById('petal-container');
+            const loaderSplash = document.getElementById('loader-splash');
+            const mainContent = document.querySelector('main');
+            
+            // --- 1. LOADING SPLASH SCREEN REVEAL ---
+            const revealTime = 3000; // 3 seconds total display time for the splash
+
+            setTimeout(() => {
+                // 1. Start fading out the splash screen
+                loaderSplash.style.opacity = '0';
+                
+                // 2. After the fade transition is complete (1.5s, based on CSS transition)
+                setTimeout(() => {
+                    loaderSplash.classList.add('hidden'); // Hide it completely
+                    mainContent.classList.remove('hidden'); // Reveal the main content
+                }, 1500); 
+
+            }, revealTime);
+
+
+            // --- 2. COUNTDOWN TIMER LOGIC ---
+            function updateCountdown() {
+                const now = new Date().getTime();
+                const distance = weddingDate - now;
+
+                if (distance < 0) {
+                    countdownEl.innerHTML = "<p class='text-4xl font-bold'>The celebration has begun!</p>";
+                    return;
+                }
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                const segments = [
+                    { value: days, label: 'Days' },
+                    { value: hours, label: 'Hours' },
+                    { value: minutes, label: 'Minutes' },
+                    { value: seconds, label: 'Seconds' }
+                ];
+
+                countdownEl.innerHTML = segments.map(segment => `
+                    <div class="p-3 sm:p-4 bg-white/70 backdrop-blur-sm rounded-lg shadow-md min-w-[70px] transition-all duration-300 hover:scale-[1.02]">
+                        <div class="text-4xl sm:text-5xl font-bold font-header text-sun-brown">${segment.value.toString().padStart(2, '0')}</div>
+                        <div class="text-xs sm:text-sm font-semibold text-text-dark uppercase mt-1">${segment.label}</div>
+                    </div>
+                `).join('');
+            }
+
+            // Update every second
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+
+
+            // --- 3. SCROLL ANIMATION (Intersection Observer) LOGIC ---
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+
+            document.querySelectorAll('.animate-on-scroll').forEach(el => {
+                observer.observe(el);
+            });
+
+
+            // --- 4. SUNFLOWER PETAL GENERATION ---
+            const NUM_PETALS = 30; 
+            for (let i = 0; i < NUM_PETALS; i++) {
+                const petal = document.createElement('div');
+                petal.classList.add('petal');
+                
+                // Randomize starting position, size, and animation duration/delay
+                const size = Math.random() * 15 + 10; // 10px to 25px
+                const duration = Math.random() * 15 + 15; // 15s to 30s
+                const delay = Math.random() * -duration; // Negative delay ensures animation starts immediately
+
+                petal.style.width = `${size}px`;
+                petal.style.height = `${size}px`;
+                petal.style.left = `${Math.random() * 100}vw`;
+                petal.style.animationDuration = `${duration}s`;
+                petal.style.animationDelay = `${delay}s`;
+                
+                // Random rotation for a little extra chaos
+                petal.style.transform = `rotate(${Math.random() * 360}deg)`;
+
+                petalContainer.appendChild(petal);
+            }
+            
+            // --- 5. RSVP INTERACTION ---
+            const rsvpBtn = document.getElementById('rsvp-btn');
+            const rsvpMessage = document.getElementById('rsvp-message');
+            
+            rsvpBtn.addEventListener('click', () => {
+                // In a real application, you'd send data to a server here.
+                // For this template, we just show a confirmation message.
+                rsvpBtn.classList.add('hidden');
+                rsvpMessage.classList.remove('hidden');
+            });
+            
+        });
+    </script>
+</body>
+</html>
