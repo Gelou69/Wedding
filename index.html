@@ -36,7 +36,6 @@
             z-index: 1000;
             opacity: 1;
             transition: opacity 1.5s ease-out; 
-            /* Ensure text is centered within the flex container */
             text-align: center;
         }
         #loader-splash.hidden {
@@ -61,7 +60,7 @@
             opacity: 0;
             animation: textFadeIn 1.5s ease-in-out forwards;
             animation-delay: 0.2s; /* Slight delay after icon */
-            margin-bottom: 2rem; /* Add space for the new button */
+            margin-bottom: 2rem; 
         }
         /* New styles for the music button */
         #play-music-btn {
@@ -298,19 +297,7 @@
                     
                     <img id="slider-img" src="pic 121.jpg" alt="Our story photo 1: The Beginning" class="slider-image">
                     
-                    <button id="prev-slide" class="absolute top-1/2 left-4 transform -translate-y-1/2 bg-sun-brown/70 text-white p-2 rounded-full shadow-md hover:bg-sun-yellow hover:text-sun-brown transition-colors focus:outline-none focus:ring-2 focus:ring-sun-yellow" aria-label="Previous slide">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                        </svg>
-                    </button>
-                    
-                    <button id="next-slide" class="absolute top-1/2 right-4 transform -translate-y-1/2 bg-sun-brown/70 text-white p-2 rounded-full shadow-md hover:bg-sun-yellow hover:text-sun-brown transition-colors focus:outline-none focus:ring-2 focus:ring-sun-yellow" aria-label="Next slide">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                        </svg>
-                    </button>
-
-                    <div id="slider-dots" class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+                    <div id="slider-dots" class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-3">
                         </div>
                 </div>
             </div>
@@ -323,6 +310,41 @@
 
     </main>
 
+    <div id="rsvp-modal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-[1001] hidden transition-opacity duration-300">
+        <div class="bg-bg-light rounded-xl p-8 max-w-md w-full shadow-2xl border-t-8 border-sun-yellow">
+            <h3 class="text-3xl font-header font-bold text-sun-brown mb-4 border-b pb-2">Confirm Your Attendance</h3>
+            <p class="text-gray-600 mb-6">Please let us know if you can join us!</p>
+            
+            <form id="rsvp-form">
+                <div class="mb-4">
+                    <label for="full-name" class="block text-sm font-semibold text-text-dark mb-1">Full Name(s)</label>
+                    <input type="text" id="full-name" name="Name" placeholder="E.g., John Doe (+1)" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-sun-yellow focus:border-sun-yellow">
+                </div>
+
+                <div class="mb-4">
+                    <label for="attending" class="block text-sm font-semibold text-text-dark mb-1">Will you be attending?</label>
+                    <select id="attending" name="Attending" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-sun-yellow focus:border-sun-yellow">
+                        <option value="" disabled selected>Select an option</option>
+                        <option value="Yes">Yes, gladly!</option>
+                        <option value="No">No, regrettably</option>
+                    </select>
+                </div>
+                
+                <div class="mb-6 hidden" id="guest-count-field">
+                    <label for="guest-count" class="block text-sm font-semibold text-text-dark mb-1">Total Guests (Including you)</label>
+                    <input type="number" id="guest-count" name="Guest Count" value="1" min="1" max="6" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-sun-yellow focus:border-sun-yellow">
+                </div>
+
+                <div class="flex justify-end space-x-3">
+                    <button type="button" id="close-modal-btn" class="px-4 py-2 text-gray-700 bg-gray-200 rounded-full hover:bg-gray-300 transition-colors">Cancel</button>
+                    <button type="submit" id="confirm-rsvp-btn" class="px-6 py-2 bg-theme-green text-white font-bold rounded-full shadow-md hover:bg-green-700 transition-colors">
+                        Confirm RSVP
+                    </button>
+                </div>
+                <p id="form-status" class="mt-3 text-sm font-semibold text-center hidden" aria-live="polite"></p>
+            </form>
+        </div>
+    </div>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const weddingDate = new Date("September 20, 2026 16:00:00").getTime();
@@ -339,26 +361,22 @@
             let isMusicPlaying = false; 
             let isStorySliderVisible = false;
 
-            // Function to reveal the main content and remove the splash
             function revealContent() {
                 loaderSplash.style.opacity = '0';
                 
                 setTimeout(() => {
                     loaderSplash.classList.add('hidden');
                     mainContent.classList.remove('hidden');
-                }, 1500); // Wait for the fade transition to finish
+                }, 1500); 
             }
 
-            // Function to handle content access (no music attempt here)
             function startContent() {
                 if (hasInteracted) return;
                 hasInteracted = true;
                 
-                // We reveal content immediately after the user interacts
                 revealContent(); 
             }
 
-            // B. Event listener: Content is revealed on button click (music will start later)
             playMusicBtn.addEventListener('click', startContent);
             
 
@@ -401,16 +419,14 @@
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('is-visible');
-                        // Do NOT unobserve the #our-story section, so we can detect when it leaves the viewport
+                        
                         if (entry.target.id !== 'our-story' && entry.target.closest('#our-story') === null) {
                             observer.unobserve(entry.target);
                         }
 
-                        // Check if the observed element is the 'our-story' section
                         if (entry.target.id === 'our-story' || entry.target.closest('#our-story')) {
                             isStorySliderVisible = true;
                             
-                            // NEW LOGIC: If the user accepted but the music is not playing yet, try to play it.
                             if (hasInteracted && !isMusicPlaying) {
                                 music.volume = 0.4;
                                 music.play().then(() => {
@@ -419,15 +435,13 @@
                                 }).catch(error => {
                                     console.log("Music play failed on scroll. Proceeding with slideshow only.");
                                     isMusicPlaying = false;
-                                    startAutoPlay(); // Start slideshow even if music fails
+                                    startAutoPlay(); 
                                 });
                             } else if (hasInteracted) {
-                                // Music is already playing, just ensure autoplay starts
                                 startAutoPlay(); 
                             }
                         }
                     } else if (!entry.isIntersecting && (entry.target.id === 'our-story' || entry.target.closest('#our-story'))) {
-                         // Stop autoplay when the story section scrolls out of view
                          isStorySliderVisible = false;
                          clearInterval(autoPlayInterval);
                     }
@@ -462,27 +476,109 @@
                 petalContainer.appendChild(petal);
             }
             
-            // --- 5. RSVP INTERACTION FIX ---
+            // --- 5. RSVP MODAL AND GOOGLE SHEET INTERACTION LOGIC ---
+            const rsvpModal = document.getElementById('rsvp-modal');
             const rsvpBtn = document.getElementById('rsvp-btn');
-            const rsvpMessage = document.getElementById('rsvp-message');
+            const closeModalBtn = document.getElementById('close-modal-btn');
+            const rsvpForm = document.getElementById('rsvp-form');
+            const formStatus = document.getElementById('form-status');
+            const attendingSelect = document.getElementById('attending');
+            const guestCountField = document.getElementById('guest-count-field');
+            const confirmRsvpBtn = document.getElementById('confirm-rsvp-btn');
             
+            // YOU MUST REPLACE THIS PLACEHOLDER URL
+            const GOOGLE_SHEET_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxJs_cvHLYVLMI5ZJsojuPYhhJNlynoeLz7WS8vhfZelOHq7QfOIpJMjXh1STwTiw/exec'; 
+
+            // A. Open Modal
             rsvpBtn.addEventListener('click', (event) => {
-                event.preventDefault(); // Treat button as an interaction
+                event.preventDefault(); 
+                rsvpModal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden'; 
+            });
+            
+            // B. Close Modal
+            const closeModal = () => {
+                rsvpModal.classList.add('hidden');
+                document.body.style.overflow = ''; 
+            };
+            closeModalBtn.addEventListener('click', closeModal);
+            rsvpModal.addEventListener('click', (e) => {
+                if (e.target === rsvpModal) {
+                    closeModal();
+                }
+            });
+            
+            // C. Show/Hide Guest Count based on Attending Status
+            attendingSelect.addEventListener('change', () => {
+                const guestCountInput = document.getElementById('guest-count');
+                if (attendingSelect.value === 'Yes') {
+                    guestCountField.classList.remove('hidden');
+                    guestCountInput.setAttribute('required', 'required');
+                } else {
+                    guestCountField.classList.add('hidden');
+                    guestCountInput.removeAttribute('required');
+                }
+            });
+            guestCountField.classList.add('hidden'); 
+
+            // D. Form Submission to Google Sheets
+            rsvpForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
                 
-                if (!rsvpBtn.disabled) {
-                    // Simulate RSVP submission
-                    rsvpBtn.textContent = 'RSVP Received!';
-                    rsvpBtn.classList.remove('bg-sun-yellow', 'hover:bg-yellow-500', 'border-sun-brown');
-                    rsvpBtn.classList.add('bg-theme-green', 'hover:bg-theme-green', 'border-theme-green', 'cursor-default');
+                if (GOOGLE_SHEET_WEB_APP_URL === 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE') {
+                    formStatus.textContent = 'ERROR: Please replace the placeholder URL in the script.';
+                    formStatus.classList.remove('hidden');
+                    formStatus.classList.add('text-red-500');
+                    return;
+                }
+
+                // 1. Prepare data
+                const formData = new FormData(rsvpForm);
+                const data = new URLSearchParams(formData); 
+                
+                // 2. Set UI for loading state
+                confirmRsvpBtn.disabled = true;
+                confirmRsvpBtn.innerHTML = '<svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Sending...';
+                formStatus.classList.remove('hidden', 'text-theme-green', 'text-red-500');
+                formStatus.textContent = 'Submitting RSVP...';
+
+                // 3. Send data to Google Apps Script
+                try {
+                    const response = await fetch(GOOGLE_SHEET_WEB_APP_URL, {
+                        method: 'POST',
+                        mode: 'no-cors', 
+                        body: data
+                    });
                     
-                    rsvpMessage.classList.remove('hidden');
-                    rsvpBtn.disabled = true; // Disable the button after action
+                    // Since mode is 'no-cors', we can only rely on the successful fetch() completing.
+                    // If it completes without an exception, we assume the data was sent.
+                    
+                    formStatus.textContent = 'Success! Your RSVP has been confirmed. Thank you!';
+                    formStatus.classList.remove('text-red-500');
+                    formStatus.classList.add('text-theme-green');
+
+                    rsvpBtn.textContent = 'RSVP Confirmed!';
+                    rsvpBtn.disabled = true;
+                    rsvpBtn.classList.remove('bg-sun-yellow', 'hover:bg-yellow-500', 'border-sun-brown');
+                    rsvpBtn.classList.add('bg-theme-green', 'hover:bg-green-700', 'border-theme-green', 'cursor-default');
+
+                    setTimeout(closeModal, 2500); // Close modal after success message
+                    
+                } catch (error) {
+                    console.error('Submission Error:', error);
+                    formStatus.textContent = 'There was an error submitting your RSVP. Please try again.';
+                    formStatus.classList.remove('text-theme-green');
+                    formStatus.classList.add('text-red-500');
+                } finally {
+                    confirmRsvpBtn.disabled = false;
+                    confirmRsvpBtn.innerHTML = 'Confirm RSVP';
                 }
             });
 
+
             // --- 6. OUR STORY SLIDER LOGIC (12 SLIDES) ---
             const storySlides = [
-                { img: 'pic 121.jpg', heading: 'The Beginning', text: "It all started with a chance meeting. Kristen was admiring the sunflowers, and Denzel, selling his homemade honey, offered her a free sample." },
+                { img: 'pic 121.jpg', heading: 'The Beginning', text: "It all started with a chance meeting. Kristen was admiring the sunflowers, and Denzel, selling his homemade honey, offered her a free sample. It was love at first sight... and first taste!" },
                 { img: 'pic 10.jpg', heading: 'Our First Date', text: "We spent our first date hiking up Eagle Peak, talking for hours. The view was incredible, but the spark between us was brighter." },
                 { img: 'pic 9.jpg', heading: 'Making It Official', text: "After two months, we knew this was forever. We officially became a couple on the Ferris wheel overlooking the city lights." },
                 { img: 'pic 8.jpg', heading: 'Travel Bug', text: "Our first big trip was backpacking across Italy. We ate pasta, saw ancient ruins, and realized we were the best travel partners." },
@@ -500,15 +596,13 @@
             const sliderImg = document.getElementById('slider-img');
             const storyHeading = document.getElementById('story-heading');
             const storyParagraph = document.getElementById('story-paragraph');
-            const prevSlideBtn = document.getElementById('prev-slide');
-            const nextSlideBtn = document.getElementById('next-slide');
             const sliderDotsContainer = document.getElementById('slider-dots');
 
             function renderDots() {
                 sliderDotsContainer.innerHTML = '';
                 storySlides.forEach((_, index) => {
                     const dot = document.createElement('button');
-                    dot.classList.add('w-3', 'h-3', 'rounded-full', 'bg-gray-400', 'hover:bg-sun-yellow', 'transition-colors', 'focus:outline-none', 'focus:ring-2', 'focus:ring-sun-yellow');
+                    dot.classList.add('w-3', 'h-3', 'rounded-full', 'bg-gray-400', 'hover:bg-sun-yellow', 'transition-colors', 'focus:outline-none', 'focus:ring-2', 'focus:ring-sun-yellow', 'mx-0.5'); // Added mx-0.5 for spacing
                     if (index === currentSlide) {
                         dot.classList.remove('bg-gray-400');
                         dot.classList.add('bg-sun-yellow', 'scale-125');
@@ -531,19 +625,16 @@
                     currentSlide = index;
                 }
 
-                // Fade out current content
                 sliderImg.classList.add('fade-out');
                 storyHeading.classList.add('fade-out');
                 storyParagraph.classList.add('fade-out');
 
                 setTimeout(() => {
-                    // Update content
                     sliderImg.src = storySlides[currentSlide].img;
                     sliderImg.alt = `Our story photo ${currentSlide + 1}: ${storySlides[currentSlide].heading}`;
                     storyHeading.textContent = storySlides[currentSlide].heading;
                     storyParagraph.textContent = storySlides[currentSlide].text;
 
-                    // Fade in new content
                     sliderImg.classList.remove('fade-out');
                     storyHeading.classList.remove('fade-out');
                     storyParagraph.classList.remove('fade-out');
@@ -552,24 +643,12 @@
                 }, 700);
             }
 
-            prevSlideBtn.addEventListener('click', () => {
-                showSlide(currentSlide - 1);
-                resetAutoPlay();
-            });
-
-            nextSlideBtn.addEventListener('click', () => {
-                showSlide(currentSlide + 1);
-                resetAutoPlay();
-            });
-
-            // Auto-play functionality
             let autoPlayInterval;
             const autoPlayDelay = 8000;
 
             function startAutoPlay() {
-                // Autoplay only starts if the user has interacted AND the story section is visible
                 if (isStorySliderVisible && hasInteracted) { 
-                    clearInterval(autoPlayInterval); // Clear any existing interval
+                    clearInterval(autoPlayInterval); 
                     autoPlayInterval = setInterval(() => {
                         showSlide(currentSlide + 1);
                     }, autoPlayDelay);
@@ -578,15 +657,12 @@
 
             function resetAutoPlay() {
                 clearInterval(autoPlayInterval);
-                // Restart only if the slider section is still visible
                 if (isStorySliderVisible) { 
                     startAutoPlay();
                 }
             }
 
-            // Initialize slider and dots display
             showSlide(0);
-            // Auto-play will be handled by the Intersection Observer when the section scrolls into view
         });
     </script>
 </body>
